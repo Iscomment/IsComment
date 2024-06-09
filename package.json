@@ -1,0 +1,155 @@
+{
+  "name": "huggingface-vscode",
+  "displayName": "llm-vscode",
+  "description": "LLM powered development for VS Code",
+  "version": "0.2.0",
+  "publisher": "HuggingFace",
+  "icon": "small_logo.png",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "galleryBanner": {
+    "color": "#100f11",
+    "theme": "dark"
+  },
+  "badges": [
+    {
+      "url": "https://img.shields.io/github/stars/huggingface/llm-vscode?style=social",
+      "description": "Star llm-vscode on Github",
+      "href": "https://github.com/huggingface/llm-vscode"
+    },
+    {
+      "url": "https://img.shields.io/twitter/follow/huggingface?style=social",
+      "description": "Follow Huggingface on Twitter",
+      "href": "https://twitter.com/huggingface"
+    }
+  ],
+  "homepage": "https://huggingface.co",
+  "repository": {
+    "url": "https://github.com/huggingface/llm-vscode.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/huggingface/llm-vscode/issues"
+  },
+  "license": "Apache-2.0",
+  "categories": [
+    "Machine Learning",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "code",
+    "assistant",
+    "ai",
+    "llm",
+    "development",
+    "huggingface"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.addComments",
+        "title": "Add Comments"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "extension.addComments",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "IsComment - Comment Generation Tool",
+      "properties": {
+        "commentDebug.InputShown": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable"
+        },
+        "commentDebug.ModelChoice": {
+          "type": "string",
+            "enum": [
+              "ChatGPT",
+              "Claude"
+            ],
+            "default": "ChatGPT",
+            "description": "Choose the large language model you want to use"
+        },
+        "commentDebug.customBackendURL": {
+            "type": "string",
+            "default": "http://localhost:8000",
+            "description": "HTTP URL of the backend"
+          },
+        "commentType.Functionality": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable"
+        },
+        "commentType.Concept": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable"
+        },
+        "commentType.Directive": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable"
+        },
+        "commentType.Rationale": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable"
+        },
+        "commentType.Implication": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable"
+        },
+        "IssueConfig.Path": {
+          "type": "string",
+          "default": "/Users/qingti/Desktop/new_data/CodeWithIssue/lucene.json",
+          "description": "Provide the path for the code-issue pairs in your software project"
+        },
+        "IssueConfig.SpecificIssue": {
+          "type": "string",
+          "default": "",
+          "editPresentation": "multilineText",
+          "description": "Enter the content of the specific issue"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "dependencies": {
+    "indent-string": "^2.1.0",
+    "undici": "^6.6.2",
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.82.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vscode/test-electron": "^2.3.9",
+    "@vscode/vsce": "^2.23.0",
+    "eslint": "^8.56.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.3.0",
+    "ovsx": "^0.8.3",
+    "typescript": "^5.3.3"
+  }
+}
