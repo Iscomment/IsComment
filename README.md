@@ -31,7 +31,7 @@ We have implemented a prototype commenting tool in the form of a Visual Studio C
 
 #### 1. Dependency:
 
-```python  
+```bash
   pip3 install numpy
   pip3 install requests
   pip3 install flask
@@ -44,28 +44,38 @@ We have implemented a prototype commenting tool in the form of a Visual Studio C
   （1）start backend
 ```bash
   cd backend
-  bash start_server.sh
+  ./start_server.sh
 ```
   （2）start frontend
 ```bash
-  Press F5, then open the file to be commented.
+  Press F5 to start the extention, and open the source code to be commented.
 ```
 
 #### 3. Setting: search IsComment in Settings and set the configurations
+
+<img src="fig/configuration.png" width="500" height="250"/>
+
 ```bash
-  Comment Type: Type of comments to be commented
-
-  IssueConfig: Path of the issue data.
-
-  InputShown: For debugging use
 
   Custom Backend URL: HTTP URL of the backend
+  
+  Input Shown: For debugging use
+  
+  Model Choice: The model used in backend to generate code comments. (Currently Suppport ChatGPT)
+    
+  Comment Type: Type of comments to be commented
 
-  ModelChoice: Currently Suppport ChatGPT
+  Issue Config: Path of the issue data.
+
 ```
 #### 4. Usage：
+
+<img src="fig/code.png" width="100" height="250"/>
+
+<img src="fig/commentedcode.png" width="200" height="250"/>
+
 ```bash
   Choose the code =》 cmd+shift+p =》 add comment
-
   Choose the code =》 right click =》 add comment
 ```
+
