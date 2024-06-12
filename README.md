@@ -18,6 +18,8 @@ We also provide some reusable code in the `./dataCrawler` fold that can be helpf
 
 The code script containing the prompts to run LLMs (ChatGPT and GPT-4o) to generate supplementary code comments can be accessed from the `./prompt` fold. (Due to privacy issue, we have not provided the API key.)
 
+The code script containing the retrievers we have explored in this paper can be accessed form the `./retriever` fold.
+
 ### Evaluation Metrics
 
 We use three evaluation metrics provided by existing work to conduct our evaluation, including the [**SentenceBert**](https://github.com/similarityMetrics/similarityMetrics)([paper](https://arxiv.org/pdf/2204.01632.pdf)), the [**SIDE**](https://github.com/antonio-mastropaolo/code-summarization-metric)([paper](https://arxiv.org/pdf/2312.15475.pdf)) and the [**MESIA**](https://github.com/MESIA-CodeComment/MESIA)([paper](https://arxiv.org/pdf/2403.17357.pdf)). The implementation of these evaluation metrics is in the `./eval` fold. More details about these metrics and the rationale behind these metrics can be accessed from their original papers.
