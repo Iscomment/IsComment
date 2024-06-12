@@ -80,13 +80,13 @@ Some settings are as follows:
 
 #### 4. Usage：
 
-<img src="fig/code.png" width="900" height="170"/>
+<img src="fig/code.png" width="900" height="160"/>
 
 * Choose the code =》 right click =》 add comment
 * Choose the code =》 cmd+shift+p =》 add comment
 
 
-<img src="fig/commentedcode.png" width="900" height="280"/>
+<img src="fig/commentedcode.png" width="900" height="260"/>
 
 
 
