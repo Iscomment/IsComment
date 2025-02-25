@@ -1,6 +1,7 @@
 import json
 import openai
 import os
+from tqdm import tqdm
 
 def codePrompt(code,issue):
     return f'Please generate a short comment in one sentence for the following function:\n{code}\n'
@@ -20,7 +21,7 @@ def IscommentExtractionPrompt(code,issue):
            f'Please read the issue report sentence by sentence, then please identify the sentences in the issue report that are helpful to generate ' \
            f'code comments for the code and remember to excludes other irrelevant sentences or code snippets. ' \
            f'Remember that you need to obey the following output format: output each relevant sentence of the issue report in one line, ' \
-           f'and at the end of each line output the releated aspect in "{}", such as (Functionality).\n' \
+           f'and at the end of each line output the releated aspect in "{{}}", such as (Functionality).\n' \
            f'To identify whether a sentence is helpful for generating code comments for the code, you can pay attention that whether the sentence provide the following aspects of information about the code:' \
            f'(1) Functionality: describe what the code does in turns of functionality. For example, the sentence "Tried to convert the given value to the requested type." describes the Functionality of the method named "tryConvertTo".\n' \
            f'(2) Concept: describe the meaning of terms used to name the code. For example, the sentence "Zombie leader is a replica won the election but does not exist in clusterstate." describes the Concept of the method named "getZombieLeader".\n' \
@@ -44,6 +45,11 @@ def IscommentCommentGenerationPrompt(code,funSentences,conceptSentences,directSe
            f'' \
            f'Code:\n {code}'
 
+def remove_quotes(s):
+    if s.startswith('"') and s.endswith('"'):
+        return s[1:-1]
+    return s
+
 def prompt(promptString):
     result = ""
     try:
@@ -63,41 +69,46 @@ def Generate(src,dest):
     f = open(src, 'r', encoding='utf-8')
     fResult = open(dest, 'w', encoding='utf-8')
     num = 0
-    for line in f.readlines():
+    lines = f.readlines()
+    print("start generating:")
+    for line in tqdm(lines):
         num = num + 1
         print(num)
         try:
             data = json.loads(line, strict=False)
-            id = data["GlobalId"]
-            code = data["content"]
+            id = data["aId"]
+            code = data["code"]
             comment = data["comment"]
             issueId = data["issueId"]
             issueString = data["issueString"]
+            issueStringList = data["issueStringList"]
+            SplitGT = data["SplitGT"]
 
             codePromptResult = prompt(codePrompt(code,issueString))
+            codePromptResult = remove_quotes(codePromptResult)
             print(codePromptResult)
 
             result = dict()
-            result["GlobalId"] = id
+            result["aId"] = id
             result["code"] = code
-            result['comment'] = comment
-            result['issueId'] = issueId
-            result['codePromptResult'] = codePromptResult
+            result["comment"] = comment
+            result["issueId"] = issueId
+            result["result"] = codePromptResult
+            result["issueStringList"] = issueStringList
+            result["SplitGT"] = SplitGT
         except:
-            # num=num-1
             continue
 
         resultStr = json.dumps(result)
         fResult.writelines(resultStr + "\n")
 
 if __name__ == "__main__":
-    Generate("C:\\Users\\user\\Desktop\\data\\ambari.json","C:\\Users\\user\\Desktop\\ChatGPT\\ambari.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\camel.json","C:\\Users\\user\\Desktop\\ChatGPT\\camel.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\derby.json","C:\\Users\\user\\Desktop\\ChatGPT\\derby.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\flink.json","C:\\Users\\user\\Desktop\\ChatGPT\\flink.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\hadoop.json","C:\\Users\\user\\Desktop\\ChatGPT\\hadoop.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\hbase.json","C:\\Users\\user\\Desktop\\ChatGPT\\hbase.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\jackrabbit.json","C:\\Users\\user\\Desktop\\ChatGPT\\jackrabbit.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\lucene.json","C:\\Users\\user\\Desktop\\ChatGPT\\lucene.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\pdfbox.json","C:\\Users\\user\\Desktop\\ChatGPT\\pdfbox.json")
-    Generate("C:\\Users\\user\\Desktop\\data\\wicket.json","C:\\Users\\user\\Desktop\\ChatGPT\\wicket.json")
+    
+    # change strategy, and the paths where you store data and results.
+
+    strategy = "codePrompt"
+    projects = ["ambari", "camel", "derby", "flink", "hadoop", "hbase", "jackrabbit", "lucene", "pdfbox", "wicket"]
+    for p in projects:
+        print(p)
+        Generate(f"/data/zxl/IsComment-main/data/{p}.json",
+                 f"/data/zxl/IsComment-main/output/{strategy}/result/{p}.json")
